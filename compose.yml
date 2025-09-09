@@ -1,0 +1,55 @@
+networks:
+  jirahexa.net:
+    driver: bridge
+
+services:
+
+  #
+  # service 
+  api.jirahexa:
+    image: 'operrin/php:8.4.6'
+    env_file: ./jira.env
+    ports:
+      - '6080:80'
+    volumes:
+      - ./app:/var/php
+    working_dir: /var/php
+    networks:
+      - jirahexa.net
+    depends_on:
+      - jira.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+  #
+  # service db : base de données postgresql
+  jira.db:
+    image: 'postgres:17.3'
+    env_file: ./jiradb.env
+    ports:
+      - '5432:5432'
+    networks:
+      - jirahexa.net
+    volumes:
+      - ./app/sql:/var/sql
+
+  #
+  # service administration des bases sql
+  adminer:
+    image: adminer
+    ports:
+      - '8080:8080'
+    networks:
+      - jirahexa.net
+
+  #
+  # composer
+  composer:
+    image: composer:2.8.6
+    command: ["composer", "install"]
+    networks:
+      - jirahexa.net
+    volumes:
+      - ./app:/app
+    depends_on:
+      - api.jirahexa
+
