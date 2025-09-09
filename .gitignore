@@ -8,3 +8,4 @@ composer.phar
 
 /app/src/config/jira.db.ini
 /app/vendor/
+/app/composer.lock
