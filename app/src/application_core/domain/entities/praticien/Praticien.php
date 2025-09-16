@@ -3,13 +3,12 @@
 namespace toubilib\core\domain\entities\praticien;
 
 
-class Praticien
-{
-    private string nom;
-    private string prenom;
-    private string ville;
-    private string specialite;
-    private string email;
+class Praticien {
+    private string $nom;
+    private string $prenom;
+    private string $ville;
+    private string $specialite;
+    private string $email;
 
     public function __construct(string $nom, string $prenom, string $ville, string $specialite, string $email)
     {

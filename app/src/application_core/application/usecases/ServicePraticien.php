@@ -15,6 +15,15 @@ class ServicePraticien implements ServicePraticienInterface
     }
 
     public function listerPraticiens(): array {
-    	
+    	$praticiens = $this->praticienRepository->findAll();
+    return array_map(function ($praticien) {
+        return new PraticienDTO(
+            $praticien->getNom(),
+            $praticien->getPrenom(),
+            $praticien->getVille(),
+            $praticien->getSpecialite(),
+            $praticien->getEmail()
+        );
+    }, $praticiens);
     }
 }
