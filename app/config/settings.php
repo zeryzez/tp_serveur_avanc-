@@ -1,5 +1,4 @@
 <?php
-// filepath: app/config/settings.php
 return [
     'db.host' => 'localhost',
     'db.name' => 'toubiauth',
