@@ -24,12 +24,13 @@ $app = AppFactory::create();
 
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
-$app->addErrorMiddleware($c->get('displayErrorDetails'), false, false)
+
+$displayErrorDetails = $container->get('settings')['displayErrorDetails'] ?? false;
+$app->addErrorMiddleware($displayErrorDetails, true, true)
     ->getDefaultErrorHandler()
     ->forceContentType('application/json')
 ;
 
 $app = (require_once __DIR__ . '/../src/api/routes.php')($app);
-
 
 return $app;
