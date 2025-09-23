@@ -2,7 +2,8 @@
 
 namespace toubilib\infra\repositories;
 
-
+use toubilib\core\domain\repositories\PraticienRepositoryInterface;
+use toubilib\core\domain\entities\praticien\Praticien;
 
 class PDOPraticienRepository implements PraticienRepositoryInterface
 {
@@ -14,7 +15,7 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
     }
  
     public function findAll(): array {
-        $stmt = $this->pdo->query('SELECT * FROM praticiens');
+        $stmt = $this->pdo->query('SELECT p.*, s.libelle FROM praticien p JOIN specialite s ON p.specialite_id = s.id');
         $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         return array_map(function ($row) {
@@ -22,7 +23,7 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
                 $row['nom'],
                 $row['prenom'],
                 $row['ville'],
-                $row['specialite'],
+                $row['libelle'],
                 $row['email']
             );
         }, $results);

@@ -21,6 +21,7 @@
   },
   "autoload": {
     "psr-4" : {
+      "toubilib\\" : "./src",
       "toubilib\\api\\" : "./src/api",
       "toubilib\\core\\" : "./src/application_core",
       "toubilib\\infra\\" : "./src/infrastructure"
