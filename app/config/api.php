@@ -1,7 +1,7 @@
 <?php
 
 use toubilib\api\actions\ListerPraticiensAction;
-use toubilib\core\application\usecases\ServicePraticienInterface;
+use toubilib\core\application\ports\api\ServicePraticienInterface;
 
 use toubilib\core\application\ports\api\ServiceRdvInterface;
 use toubilib\api\actions\ListerCreneauxOccupes;
