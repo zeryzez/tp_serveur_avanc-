@@ -4,6 +4,12 @@ use toubilib\infra\repositories\PDOPraticienRepository;
 use toubilib\core\application\usecases\ServicePraticien;
 use toubilib\core\application\usecases\ServicePraticienInterface;
 
+use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepositoryInterface;
+use toubilib\infra\repositories\PDORdvRepository;
+use toubilib\core\application\usecases\ServiceRdv;
+use toubilib\core\application\ports\api\ServiceRdvInterface;
+use PDO;
+
 return [
     'pdo.praticien' => function($container) {
         $settings = $container->get('settings');
@@ -25,7 +31,7 @@ return [
 
     'pdo.rdv' => function($container) {
         $settings = $container->get('settings');
-        $dsn = "pgsql:host={$settings['db.rdv.host']};port={$settings['db.rdv.port']};dbname={$settings['db.rdv.name']}";
+        $dsn = "pgsql:host={$settings['db.rdv.host']};dbname={$settings['db.rdv.name']}";
         return new PDO($dsn, $settings['db.rdv.user'], $settings['db.rdv.pass']);
     },
 
@@ -35,5 +41,13 @@ return [
 
     ServicePraticienInterface::class => function($container) {
         return new ServicePraticien($container->get(PraticienRepositoryInterface::class));
+    },
+
+    RdvRepositoryInterface::class => function($container) {
+        return new PDORdvRepository($container->get('pdo.rdv'));
+    },
+
+    ServiceRdvInterface::class => function($container) {
+        return new ServiceRdv($container->get(RdvRepositoryInterface::class));
     },
 ];
