@@ -1,5 +1,5 @@
 <?php
-use toubilib\core\domain\repositories\PraticienRepositoryInterface;
+use toubilib\core\application\ports\spi\repositoryInterfaces\PraticienRepositoryInterface;
 use toubilib\infra\repositories\PDOPraticienRepository;
 use toubilib\core\application\usecases\ServicePraticien;
 use toubilib\core\application\usecases\ServicePraticienInterface;
@@ -35,5 +35,18 @@ return [
 
     ServicePraticienInterface::class => function($container) {
         return new ServicePraticien($container->get(PraticienRepositoryInterface::class));
+    },
+
+    // Actions
+    \toubilib\api\actions\HomeAction::class => function($container) {
+        return new \toubilib\api\actions\HomeAction();
+    },
+
+    \toubilib\api\actions\ListerPraticiensAction::class => function($container) {
+        return new \toubilib\api\actions\ListerPraticiensAction($container->get(ServicePraticienInterface::class));
+    },
+
+    \toubilib\api\actions\AfficherDetailPraticienAction::class => function($container) {
+        return new \toubilib\api\actions\AfficherDetailPraticienAction($container->get(ServicePraticienInterface::class));
     },
 ];
