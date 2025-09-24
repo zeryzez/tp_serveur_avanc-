@@ -2,7 +2,7 @@
 use toubilib\core\application\ports\spi\repositoryInterfaces\PraticienRepositoryInterface;
 use toubilib\infra\repositories\PDOPraticienRepository;
 use toubilib\core\application\usecases\ServicePraticien;
-use toubilib\core\application\usecases\ServicePraticienInterface;
+use toubilib\core\application\ports\api\ServicePraticienInterface;
 
 use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepositoryInterface;
 use toubilib\infra\repositories\PDORdvRepository;

@@ -6,6 +6,7 @@ use toubilib\core\application\ports\spi\repositoryInterfaces\PraticienRepository
 use toubilib\core\application\dto\PraticienDTO;
 use toubilib\core\domain\entities\praticien\MotifVisite;
 use toubilib\core\domain\entities\praticien\MoyenPaiement;
+use toubilib\core\application\ports\api\ServicePraticienInterface;
 
 class ServicePraticien implements ServicePraticienInterface
 {
