@@ -37,4 +37,13 @@ class ServiceRdv implements ServiceRdvInterface {
             ];
         }, $rdvs);
     }
+
+    public function annulerRendezVous(int $idRdv): void {
+        $rdv = $this->rdvrepository->findById($idRdv);
+        if (!$rdv) {
+            throw new Exception("Le rendez-vous n'existe pas.");
+        }
+        $rdv->annuler();
+        $this->rdvRepository->save($rdv);
+    }
 }
