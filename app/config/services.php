@@ -8,7 +8,6 @@ use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepositoryInterf
 use toubilib\infra\repositories\PDORdvRepository;
 use toubilib\core\application\usecases\ServiceRdv;
 use toubilib\core\application\ports\api\ServiceRdvInterface;
-use PDO;
 
 return [
     'pdo.praticien' => function($container) {
