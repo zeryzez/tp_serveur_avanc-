@@ -9,6 +9,8 @@ use toubilib\api\actions\AfficherDetailPraticienAction;
 use toubilib\api\actions\ListerCreneauxOccupes;
 use toubilib\api\actions\AfficherRdvAction;
 use toubilib\api\actions\AfficherAgendaPraticienAction;
+use toubilib\api\actions\CreerRendezVousAction;
+use toubilib\api\middleware\ValidationRendezVousMiddleware;
 
 return function( \Slim\App $app):\Slim\App {
 
@@ -18,6 +20,7 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/praticiens/{id}/creneaux', ListerCreneauxOccupes::class);
     $app->get('/rdvs/{id}', AfficherRdvAction::class);
     $app->get('/praticiens/{id}/agenda', AfficherAgendaPraticienAction::class);
+    $app->post('/rdvs/new', CreerRendezVousAction::class)->add(ValidationRendezVousMiddleware::class);
 
     return $app;
 };
