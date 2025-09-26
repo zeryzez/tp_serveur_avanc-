@@ -15,10 +15,10 @@ class ListerCreneauxOccupes
         $this->serviceRdv = $serviceRdv;
     }
 
-    public function __invoke(Request $request, Response $response): Response
+    public function __invoke(Request $request, Response $response, array $args): Response
     {
+        $praticienId = $args['id'] ?? null;
         $params = $request->getQueryParams();
-        $praticienId = $params['praticienId'] ?? null;
         $dateDebut = $params['dateDebut'] ?? null;
         $dateFin = $params['dateFin'] ?? null;
 

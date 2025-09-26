@@ -31,10 +31,18 @@ class ServiceRdv implements ServiceRdvInterface {
     public function listerCreneauxOccupes(string $praticienId, string $dateDebut, string $dateFin): array {
         $rdvs = $this->rdvRepository->findCreneauxByPraticienAndPeriode($praticienId, $dateDebut, $dateFin);
         return array_map(function($rdv) {
-            return [
-                'debut' => $rdv->getDateHeureDebut(),
-                'fin' => $rdv->getDateHeureFin()
-            ];
+            return new RdvDTO(
+                $rdv->getId(),
+                $rdv->getPraticienId(),
+                $rdv->getPatientId(),
+                $rdv->getPatientEmail(),
+                $rdv->getDateHeureDebut(),
+                $rdv->getDateHeureFin(),
+                $rdv->getStatus(),
+                $rdv->getDuree(),
+                $rdv->getDateCreation(),
+                $rdv->getMotifVisite()
+            );
         }, $rdvs);
     }
 
