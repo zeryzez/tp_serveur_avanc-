@@ -16,7 +16,9 @@ class HomeAction
                 'GET /praticiens' => 'Lister tous les praticiens',
                 'GET /praticiens/{id}' => 'Afficher les détails d\'un praticien',
                 'GET /praticiens/{id}/creneaux' => 'Lister les créneaux occupés d\'un praticien',
-                'GET /rdvs/{id}' => 'Consulter un rendez-vous'
+                'GET /rdvs/{id}' => 'Consulter un rendez-vous',
+                // http://localhost:6080/praticiens/4305f5e9-be5a-4ccf-8792-7e07d7017363/agenda?date_debut=2025-12-04%2000:00:00&date_fin=2025-12-04%2023:59:59 url de test
+                "GET /praticiens/{id}/agenda?date_debut=YYYY-MM-DD%2000:00:00&date_fin=YYYY-MM-DD%2023:59:59" => "Consulter l'agenda d'un praticien sur une période donnée (préciser les heures pour inclure toute la journée)"
             ]
         ]));
 

@@ -8,6 +8,7 @@ use toubilib\api\actions\ListerPraticiensAction;
 use toubilib\api\actions\AfficherDetailPraticienAction;
 use toubilib\api\actions\ListerCreneauxOccupes;
 use toubilib\api\actions\AfficherRdvAction;
+use toubilib\api\actions\AfficherAgendaPraticienAction;
 
 return function( \Slim\App $app):\Slim\App {
 
@@ -16,6 +17,7 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/praticiens/{id}', AfficherDetailPraticienAction::class);
     $app->get('/praticiens/{id}/creneaux', ListerCreneauxOccupes::class);
     $app->get('/rdvs/{id}', AfficherRdvAction::class);
+    $app->get('/praticiens/{id}/agenda', AfficherAgendaPraticienAction::class);
 
     return $app;
 };
