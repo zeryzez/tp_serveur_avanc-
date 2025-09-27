@@ -6,16 +6,16 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use toubilib\core\application\ports\api\ServiceRdvInterface;
 
-class AnnulerRendezVousAction
+class AnnulerRDVAction
 {
     private ServiceRdvInterface $serviceRdv;
 
-    public function construct(ServiceRdvInterface $serviceRdv)
+    public function __construct(ServiceRdvInterface $serviceRdv)
     {
         $this->serviceRdv = $serviceRdv;
     }
 
-    public function invoke(Request $request, Response $response, array $args): Response
+    public function __invoke(Request $request, Response $response, array $args): Response
     {
         $idRdv = $args['id'];
         try {

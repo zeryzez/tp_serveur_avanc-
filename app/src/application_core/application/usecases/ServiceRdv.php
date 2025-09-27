@@ -78,11 +78,11 @@ class ServiceRdv implements ServiceRdvInterface
         $this->rdvRepository->save($rdv);
     }
 
-    public function annulerRendezVous(int $idRdv): void
+    public function annulerRendezVous(string $idRdv): void
     {
-        $rdv = $this->rdvrepository->findById($idRdv);
+        $rdv = $this->rdvRepository->findById($idRdv);
         if (!$rdv) {
-            throw new Exception("Le rendez-vous n'existe pas.");
+            throw new \Exception("Le rendez-vous n'existe pas.");
         }
         $rdv->annuler();
         $this->rdvRepository->save($rdv);
