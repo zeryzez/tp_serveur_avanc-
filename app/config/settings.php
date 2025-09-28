@@ -7,19 +7,19 @@ return [
     'db.praticien.pass' => 'toubiprat',
 
     'db.auth.host' => 'toubiauth.db',
-    'db.auth.port' => '5433',
+    'db.auth.port' => '5432',
     'db.auth.name' => 'toubiauth',
     'db.auth.user' => 'toubiauth',
     'db.auth.pass' => 'toubiauth',
 
     'db.patient.host' => 'toubipat.db',
-    'db.patient.port' => '5435',
+    'db.patient.port' => '5432',
     'db.patient.name' => 'toubipat',
     'db.patient.user' => 'toubipat',
     'db.patient.pass' => 'toubipat',
 
     'db.rdv.host' => 'toubirdv.db',
-    'db.rdv.port' => '5434',
+    'db.rdv.port' => '5432',
     'db.rdv.name' => 'toubirdv',
     'db.rdv.user' => 'toubirdv',
     'db.rdv.pass' => 'toubirdv',
