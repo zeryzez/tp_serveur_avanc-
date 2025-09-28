@@ -9,6 +9,9 @@ use toubilib\api\actions\AfficherRdvAction;
 
 use toubilib\api\actions\CreerRendezVousAction;
 use toubilib\api\middleware\ValidationRendezVousMiddleware;
+use toubilib\core\application\ports\spi\repositoryInterfaces\PraticienRepositoryInterface;
+use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepositoryInterface;
+use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepositoryInterface;
 
 return [
     ListerPraticiensAction::class => function($container) {
@@ -24,6 +27,10 @@ return [
         return new CreerRendezVousAction($container->get(ServiceRdvInterface::class));
     },
     ValidationRendezVousMiddleware::class => function($container) {
-        return new ValidationRendezVousMiddleware();
+        return new ValidationRendezVousMiddleware(
+            $container->get(PraticienRepositoryInterface::class),
+            $container->get(PatientRepositoryInterface::class),
+            $container->get(RdvRepositoryInterface::class)
+        );
     }
 ];
