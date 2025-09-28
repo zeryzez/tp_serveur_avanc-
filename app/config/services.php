@@ -9,6 +9,10 @@ use toubilib\infra\repositories\PDORdvRepository;
 use toubilib\core\application\usecases\ServiceRdv;
 use toubilib\core\application\ports\api\ServiceRdvInterface;
 
+use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepositoryInterface;
+use toubilib\infra\repositories\PDOPatientRepository;
+use PDO;
+
 return [
     'pdo.praticien' => function($container) {
         $settings = $container->get('settings');
@@ -46,7 +50,15 @@ return [
         return new PDORdvRepository($container->get('pdo.rdv'));
     },
 
+    PatientRepositoryInterface::class => function($container) {
+        return new PDOPatientRepository($container->get('pdo.patient'));
+    },
+
     ServiceRdvInterface::class => function($container) {
-        return new ServiceRdv($container->get(RdvRepositoryInterface::class));
+        return new ServiceRdv(
+            $container->get(RdvRepositoryInterface::class),
+            $container->get(PraticienRepositoryInterface::class),
+            $container->get(PatientRepositoryInterface::class)
+        );
     },
 ];
