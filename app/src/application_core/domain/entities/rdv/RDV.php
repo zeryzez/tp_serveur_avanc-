@@ -51,7 +51,7 @@ class RDV {
 
     public function annuler(): void {
 
-        if ($this->status === 1) {
+        if ($this->status === 0) {
             throw new \Exception("Le rendez-vous est déjà annulé.");
         }
 
@@ -62,6 +62,6 @@ class RDV {
             throw new \Exception("Impossible d'annuler un rendez-vous dont la dâte est déjà passée.");
         }
 
-        $this->status = 1; // Annulé
+        $this->status = 0; // Annulé
     }
 }
