@@ -51,17 +51,17 @@ class RDV {
 
     public function annuler(): void {
 
-        if ($this->status === 0) {
-            throw new Exception("Le rendez-vous est déjà annulé.");
+        if ($this->status === 1) {
+            throw new \Exception("Le rendez-vous est déjà annulé.");
         }
 
         $now = new \DateTime();
         $debut = new \DateTime($this->date_heure_debut);
 
         if ($now > $debut) {
-            throw new Exception("Impossible d'annuler un rendez-vous dont la dâte est déjà passée.");
+            throw new \Exception("Impossible d'annuler un rendez-vous dont la dâte est déjà passée.");
         }
 
-        $this->status = 0; // Annulé
+        $this->status = 1; // Annulé
     }
 }

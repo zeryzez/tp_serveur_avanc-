@@ -50,8 +50,22 @@ class PDORdvRepository implements RdvRepositoryInterface {
         return $result;
     }
 
-    public function save(RDV $rdv): void {
-        $stmt = $this->pdo->prepare('INSERT INTO rdv (id, praticien_id, patient_id, patient_email, date_heure_debut, date_heure_fin, status, duree, date_creation, motif_visite) VALUES (:id, :praticien_id, :patient_id, :patient_email, :date_heure_debut, :date_heure_fin, :status, :duree, :date_creation, :motif_visite)');
+    public function save(RDV $rdv): void {          // sert à la fois pour créer et mettre à jour (upsert)
+        $stmt = $this->pdo->prepare('
+            INSERT INTO rdv (id, praticien_id, patient_id, patient_email, date_heure_debut, date_heure_fin, status, duree, date_creation, motif_visite)
+            VALUES (:id, :praticien_id, :patient_id, :patient_email, :date_heure_debut, :date_heure_fin, :status, :duree, :date_creation, :motif_visite)
+            ON CONFLICT (id) DO UPDATE SET
+                praticien_id = EXCLUDED.praticien_id,
+                patient_id = EXCLUDED.patient_id,
+                patient_email = EXCLUDED.patient_email,
+                date_heure_debut = EXCLUDED.date_heure_debut,
+                date_heure_fin = EXCLUDED.date_heure_fin,
+                status = EXCLUDED.status,
+                duree = EXCLUDED.duree,
+                date_creation = EXCLUDED.date_creation,
+                motif_visite = EXCLUDED.motif_visite
+        ');
+
         $stmt->execute([
             'id' => $rdv->getId(),
             'praticien_id' => $rdv->getPraticienId(),
@@ -65,4 +79,5 @@ class PDORdvRepository implements RdvRepositoryInterface {
             'motif_visite' => $rdv->getMotifVisite()
         ]);
     }
+
 }

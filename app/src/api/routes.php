@@ -11,6 +11,7 @@ use toubilib\api\actions\AfficherRdvAction;
 use toubilib\api\actions\AfficherAgendaPraticienAction;
 use toubilib\api\actions\CreerRendezVousAction;
 use toubilib\api\middleware\ValidationRendezVousMiddleware;
+use toubilib\api\actions\AnnulerRDVAction;
 
 return function( \Slim\App $app):\Slim\App {
 
@@ -21,6 +22,7 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/rdvs/{id}', AfficherRdvAction::class);
     $app->get('/praticiens/{id}/agenda', AfficherAgendaPraticienAction::class);
     $app->post('/rdvs/new', CreerRendezVousAction::class)->add(ValidationRendezVousMiddleware::class);
+    $app->delete('/rdvs/{id}', AnnulerRDVAction::class);
 
     return $app;
 };
