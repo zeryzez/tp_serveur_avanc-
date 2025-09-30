@@ -51,20 +51,33 @@ class PDORdvRepository implements RdvRepositoryInterface {
     }
 
     public function save(RDV $rdv): void {          // sert à la fois pour créer et mettre à jour (upsert)
-        $stmt = $this->pdo->prepare('
-            INSERT INTO rdv (id, praticien_id, patient_id, patient_email, date_heure_debut, date_heure_fin, status, duree, date_creation, motif_visite)
-            VALUES (:id, :praticien_id, :patient_id, :patient_email, :date_heure_debut, :date_heure_fin, :status, :duree, :date_creation, :motif_visite)
-            ON CONFLICT (id) DO UPDATE SET
-                praticien_id = EXCLUDED.praticien_id,
-                patient_id = EXCLUDED.patient_id,
-                patient_email = EXCLUDED.patient_email,
-                date_heure_debut = EXCLUDED.date_heure_debut,
-                date_heure_fin = EXCLUDED.date_heure_fin,
-                status = EXCLUDED.status,
-                duree = EXCLUDED.duree,
-                date_creation = EXCLUDED.date_creation,
-                motif_visite = EXCLUDED.motif_visite
-        ');
+        // Vérifie si le rdv existe déjà (par id)
+        $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM rdv WHERE id = :id');
+        $stmt->execute(['id' => $rdv->getId()]);
+        $exists = $stmt->fetchColumn() > 0;
+
+        if ($exists) {
+            // Mise à jour (ex: annulation = status à 0)
+            $stmt = $this->pdo->prepare('
+                UPDATE rdv SET
+                    praticien_id = :praticien_id,
+                    patient_id = :patient_id,
+                    patient_email = :patient_email,
+                    date_heure_debut = :date_heure_debut,
+                    date_heure_fin = :date_heure_fin,
+                    status = :status,
+                    duree = :duree,
+                    date_creation = :date_creation,
+                    motif_visite = :motif_visite
+                WHERE id = :id
+            ');
+        } else {
+            // Insertion
+            $stmt = $this->pdo->prepare('
+                INSERT INTO rdv (id, praticien_id, patient_id, patient_email, date_heure_debut, date_heure_fin, status, duree, date_creation, motif_visite)
+                VALUES (:id, :praticien_id, :patient_id, :patient_email, :date_heure_debut, :date_heure_fin, :status, :duree, :date_creation, :motif_visite)
+            ');
+        }
 
         $stmt->execute([
             'id' => $rdv->getId(),
