@@ -1,8 +1,8 @@
 <?php
-namespace toubilib\api\middleware;
+namespace toubilib\api\middlewares;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ResponseInterface;
 use toubilib\core\application\dto\InputRendezVousDTO;
 use toubilib\core\application\ports\spi\repositoryInterfaces\PraticienRepositoryInterface;
 use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepositoryInterface;
@@ -24,9 +24,10 @@ class ValidationRendezVousMiddleware
         $this->rdvRepository = $rdvRepository;
     }
 
-    public function __invoke(Request $request, Response $response, callable $next)
+    public function __invoke(Request $request, \Psr\Http\Server\RequestHandlerInterface $handler): ResponseInterface
     {
         $data = $request->getParsedBody();
+        $response = new \Slim\Psr7\Response();
 
         // Contrôles de présence
         $required = ['praticien_id', 'patient_id', 'date_heure_debut', 'motif_visite', 'duree'];
@@ -84,9 +85,14 @@ class ValidationRendezVousMiddleware
 
         // Vérifier que le motif de visite fait partie des motifs pour ce praticien
         $motifIds = array_map(fn($m) => (string)$m->getId(), $praticien->getMotifsVisite());
+        // Debug : afficher les IDs de motifs et la valeur reçue
+        error_log('DEBUG motifIds: ' . json_encode($motifIds));
+        error_log('DEBUG motif_visite reçu: ' . json_encode($dto->motif_visite));
         if (!in_array($dto->motif_visite, $motifIds)) {
             $response->getBody()->write(json_encode([
-                'error' => "Le motif de visite n'est pas valide pour ce praticien."
+                'error' => "Le motif de visite n'est pas valide pour ce praticien.",
+                'debug_motifIds' => $motifIds,
+                'debug_motif_visite' => $dto->motif_visite
             ]));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
         }
@@ -128,6 +134,6 @@ class ValidationRendezVousMiddleware
         // Transmission du DTO à l'action suivante
         $request = $request->withAttribute('inputRendezVousDTO', $dto);
 
-        return $next($request, $response);
+    return $handler->handle($request);
     }
 }
