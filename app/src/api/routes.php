@@ -22,7 +22,7 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/rdvs/{id}', AfficherRdvAction::class);
     $app->get('/praticiens/{id}/agenda', AfficherAgendaPraticienAction::class);
     $app->post('/rdvs/new', CreerRendezVousAction::class)->add(ValidationRendezVousMiddleware::class);
-    $app->post('/rdvs/{id}', AnnulerRDVAction::class);
+    $app->post('/rdvs/{id}/annuler', AnnulerRDVAction::class);
 
     return $app;
 };
