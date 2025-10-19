@@ -11,7 +11,6 @@ use toubilib\core\application\ports\api\ServiceRdvInterface;
 
 use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepositoryInterface;
 use toubilib\infra\repositories\PDOPatientRepository;
-use PDO;
 
 return [
     'pdo.praticien' => function($container) {

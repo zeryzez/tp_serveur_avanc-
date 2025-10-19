@@ -12,6 +12,7 @@ use toubilib\api\actions\AfficherAgendaPraticienAction;
 use toubilib\api\actions\CreerRendezVousAction;
 use toubilib\api\middlewares\ValidationRendezVousMiddleware;
 use toubilib\api\actions\AnnulerRDVAction;
+use toubilib\api\actions\LoginAction;
 
 return function( \Slim\App $app):\Slim\App {
 
@@ -23,6 +24,7 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/praticiens/{id}/agenda', AfficherAgendaPraticienAction::class);
     $app->post('/rdvs/{id}/annuler', AnnulerRDVAction::class);
     $app->post('/rdvs', CreerRendezVousAction::class)->add(ValidationRendezVousMiddleware::class);
+    $app->post('/auth/login', LoginAction::class);
 
     return $app;
 };
