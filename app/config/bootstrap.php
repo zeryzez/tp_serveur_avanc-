@@ -2,6 +2,12 @@
 
 use DI\Container;
 use Slim\Factory\AppFactory;
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+if (file_exists(__DIR__ . '/.env')) {
+    $dotenv->load();
+}
 
 $settings = require __DIR__ . '/settings.php';
 $services = require __DIR__ . '/services.php';

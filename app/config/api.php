@@ -13,6 +13,9 @@ use toubilib\core\application\ports\spi\repositoryInterfaces\PraticienRepository
 use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepositoryInterface;
 use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepositoryInterface;
 
+use toubilib\api\actions\SigninAction;
+use toubilib\api\provider\AuthProvider;
+
 return [
     ListerPraticiensAction::class => function($container) {
         return new ListerPraticiensAction($container->get(ServicePraticienInterface::class));
@@ -32,5 +35,9 @@ return [
             $container->get(PatientRepositoryInterface::class),
             $container->get(RdvRepositoryInterface::class)
         );
+    },
+
+    SigninAction::class => function($container) {
+        return new SigninAction($container->get(AuthProvider::class));
     }
 ];
