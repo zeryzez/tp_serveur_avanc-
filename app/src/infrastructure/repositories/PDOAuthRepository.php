@@ -12,12 +12,15 @@ class PDOAuthRepository implements AuthRepositoryInterface
     public function __construct(\PDO $pdo) 
     {
         $this->pdo = $pdo;
+        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
     }
 
 
     public function findUserByEmail(string $email): ?User 
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = :email');
+        // sélectionner la colonne password et l'aliaser en password_hash pour correspondre à l'entité User
+        $stmt = $this->pdo->prepare('SELECT id, email, password AS password_hash, role FROM public.users WHERE email = :email LIMIT 1');
         $stmt->execute(['email' => $email]);
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
@@ -28,7 +31,7 @@ class PDOAuthRepository implements AuthRepositoryInterface
         return new User(
             $row['id'],
             $row['email'],
-            $row['password_hash'],
+            $row['password'],
             $row['role']
         );
     }
@@ -42,5 +45,6 @@ class PDOAuthRepository implements AuthRepositoryInterface
             'password_hash' => $user->getPasswordHash(),
             'role' => $user->getRole()
         ]);
+        
     }
 }

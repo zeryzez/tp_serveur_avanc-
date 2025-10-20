@@ -12,6 +12,9 @@ use toubilib\core\application\ports\api\ServiceRdvInterface;
 use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepositoryInterface;
 use toubilib\infra\repositories\PDOPatientRepository;
 
+use toubilib\core\application\ports\spi\repositoryInterfaces\AuthRepositoryInterface;
+use toubilib\infrastructure\repositories\PDOAuthRepository;
+
 use toubilib\core\application\usecases\ServiceAuthz;
 use toubilib\core\application\ports\api\ServiceAuthzInterface;
 
@@ -62,6 +65,10 @@ return [
             $container->get(PraticienRepositoryInterface::class),
             $container->get(PatientRepositoryInterface::class)
         );
+    },
+
+    AuthRepositoryInterface::class => function($container) {
+        return new PDOAuthRepository($container->get('pdo.auth'));
     },
 
     ServiceAuthzInterface::class => function($container) {
