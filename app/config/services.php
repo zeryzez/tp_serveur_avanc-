@@ -12,6 +12,11 @@ use toubilib\core\application\ports\api\ServiceRdvInterface;
 use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepositoryInterface;
 use toubilib\infra\repositories\PDOPatientRepository;
 
+use toubilib\core\application\ports\spi\repositoryInterfaces\AuthRepositoryInterface;
+use toubilib\infrastructure\repositories\PDOAuthRepository;
+use toubilib\core\application\usecases\ServiceAuth;
+use toubilib\api\provider\AuthProvider;
+
 return [
     'pdo.praticien' => function($container) {
         $settings = $container->get('settings');
@@ -58,6 +63,22 @@ return [
             $container->get(RdvRepositoryInterface::class),
             $container->get(PraticienRepositoryInterface::class),
             $container->get(PatientRepositoryInterface::class)
+        );
+    },
+
+    AuthRepositoryInterface::class => function($container) {
+        return new PDOAuthRepository($container->get('pdo.auth'));
+    },
+
+    ServiceAuth::class => function($container) {
+        return new ServiceAuth($container->get(AuthRepositoryInterface::class));
+    },
+
+    AuthProvider::class => function($container) {
+        $settings = $container->get('settings');
+        return new AuthProvider(
+            $container->get(ServiceAuth::class),
+            $settings['jwt']['secret']
         );
     },
 ];

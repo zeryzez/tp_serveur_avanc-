@@ -27,4 +27,8 @@ return [
     'displayErrorDetails' => true,
     'logError' => true,
     'logErrorDetails' => true,
+
+    'jwt' => [
+        'secret' => $_ENV['JWT_SECRET'] ?? 'default_secret_key_change_me_in_production'
+    ],
 ];
