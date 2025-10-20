@@ -17,6 +17,9 @@ use toubilib\infrastructure\repositories\PDOAuthRepository;
 use toubilib\core\application\usecases\ServiceAuth;
 use toubilib\api\provider\AuthProvider;
 
+use toubilib\core\application\usecases\ServiceAuthz;
+use toubilib\core\application\ports\api\ServiceAuthzInterface;
+
 return [
     'pdo.praticien' => function($container) {
         $settings = $container->get('settings');
@@ -80,5 +83,9 @@ return [
             $container->get(ServiceAuth::class),
             $settings['jwt']['secret']
         );
+    },
+
+    ServiceAuthzInterface::class => function($container) {
+        return new ServiceAuthz($container->get(RdvRepositoryInterface::class));
     },
 ];
