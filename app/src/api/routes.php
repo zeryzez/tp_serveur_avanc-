@@ -28,7 +28,6 @@ return function( \Slim\App $app):\Slim\App {
     $app->post('/rdvs', CreerRendezVousAction::class)->add(ValidationRendezVousMiddleware::class);
     $app->post('/auth/login', LoginAction::class);
     
-    // Route pour l'authentification (signin) - Exercice 2
     $app->post('/auth/signin', SigninAction::class);
 
     return $app;

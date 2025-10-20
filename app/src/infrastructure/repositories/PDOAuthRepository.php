@@ -28,7 +28,7 @@ class PDOAuthRepository implements AuthRepositoryInterface
         return new User(
             $row['id'],
             $row['email'],
-            $row['password_hash'],
+            $row['password'],
             $row['role']
         );
     }
