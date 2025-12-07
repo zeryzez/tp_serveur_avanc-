@@ -21,48 +21,55 @@ use toubilib\api\provider\AuthProvider;
 use toubilib\core\application\usecases\ServiceAuthz;
 use toubilib\core\application\ports\api\ServiceAuthzInterface;
 
+use toubilib\core\application\ports\api\ServicePatientInterface;
+use toubilib\core\application\usecases\ServicePatient;
 return [
-    'pdo.praticien' => function($container) {
+    'pdo.praticien' => function ($container) {
         $settings = $container->get('settings');
         $dsn = "pgsql:host={$settings['db.praticien.host']};port={$settings['db.praticien.port']};dbname={$settings['db.praticien.name']}";
         return new PDO($dsn, $settings['db.praticien.user'], $settings['db.praticien.pass']);
     },
 
-    'pdo.auth' => function($container) {
+    'pdo.auth' => function ($container) {
         $settings = $container->get('settings');
         $dsn = "pgsql:host={$settings['db.auth.host']};port={$settings['db.auth.port']};dbname={$settings['db.auth.name']}";
         return new PDO($dsn, $settings['db.auth.user'], $settings['db.auth.pass']);
     },
 
-    'pdo.patient' => function($container) {
+    'pdo.patient' => function ($container) {
         $settings = $container->get('settings');
         $dsn = "pgsql:host={$settings['db.patient.host']};port={$settings['db.patient.port']};dbname={$settings['db.patient.name']}";
         return new PDO($dsn, $settings['db.patient.user'], $settings['db.patient.pass']);
     },
 
-    'pdo.rdv' => function($container) {
+    'pdo.rdv' => function ($container) {
         $settings = $container->get('settings');
         $dsn = "pgsql:host={$settings['db.rdv.host']};dbname={$settings['db.rdv.name']}";
         return new PDO($dsn, $settings['db.rdv.user'], $settings['db.rdv.pass']);
     },
 
-    PraticienRepositoryInterface::class => function($container) {
+    PraticienRepositoryInterface::class => function ($container) {
         return new PDOPraticienRepository($container->get('pdo.praticien'));
     },
 
-    ServicePraticienInterface::class => function($container) {
+    ServicePraticienInterface::class => function ($container) {
         return new ServicePraticien($container->get(PraticienRepositoryInterface::class));
     },
 
-    RdvRepositoryInterface::class => function($container) {
+    ServicePatientInterface::class => function ($container) {
+        // ...
+        return new ServicePatient($container->get('pdo.patient'));
+    },
+
+    RdvRepositoryInterface::class => function ($container) {
         return new PDORdvRepository($container->get('pdo.rdv'));
     },
 
-    PatientRepositoryInterface::class => function($container) {
+    PatientRepositoryInterface::class => function ($container) {
         return new PDOPatientRepository($container->get('pdo.patient'));
     },
 
-    ServiceRdvInterface::class => function($container) {
+    ServiceRdvInterface::class => function ($container) {
         return new ServiceRdv(
             $container->get(RdvRepositoryInterface::class),
             $container->get(PraticienRepositoryInterface::class),
@@ -70,15 +77,15 @@ return [
         );
     },
 
-    AuthRepositoryInterface::class => function($container) {
+    AuthRepositoryInterface::class => function ($container) {
         return new PDOAuthRepository($container->get('pdo.auth'));
     },
 
-    ServiceAuth::class => function($container) {
+    ServiceAuth::class => function ($container) {
         return new ServiceAuth($container->get(AuthRepositoryInterface::class));
     },
 
-    AuthProvider::class => function($container) {
+    AuthProvider::class => function ($container) {
         $settings = $container->get('settings');
         return new AuthProvider(
             $container->get(ServiceAuth::class),
@@ -86,7 +93,7 @@ return [
         );
     },
 
-    ServiceAuthzInterface::class => function($container) {
+    ServiceAuthzInterface::class => function ($container) {
         return new ServiceAuthz($container->get(RdvRepositoryInterface::class));
     },
 ];

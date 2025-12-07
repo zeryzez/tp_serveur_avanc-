@@ -15,6 +15,8 @@ use toubilib\api\middlewares\AuthzRendezVousMiddleware;
 use toubilib\api\actions\AnnulerRDVAction;
 use toubilib\api\actions\LoginAction;
 use toubilib\api\actions\SigninAction;
+use toubilib\api\actions\CreerPatientAction;
+use toubilib\api\middlewares\ValidationPatientMiddleware;
 
 return function( \Slim\App $app):\Slim\App {
 
@@ -26,8 +28,9 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/praticiens/{id}/agenda', AfficherAgendaPraticienAction::class)->setName('agenda-praticien')->add(AuthzRendezVousMiddleware::class);
     $app->post('/rdvs/{id}/annuler', AnnulerRDVAction::class);
     $app->post('/rdvs', CreerRendezVousAction::class)->add(ValidationRendezVousMiddleware::class);
+    $app->post('/inscription', CreerPatientAction::class)
+        ->add(ValidationPatientMiddleware::class);
     $app->post('/auth/login', LoginAction::class);
-    
     $app->post('/auth/signin', SigninAction::class);
 
     return $app;

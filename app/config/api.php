@@ -8,15 +8,22 @@ use toubilib\api\actions\ListerCreneauxOccupes;
 use toubilib\api\actions\AfficherRdvAction;
 
 use toubilib\api\actions\CreerRendezVousAction;
-use toubilib\api\middleware\ValidationRendezVousMiddleware;
+use toubilib\api\middlewares\ValidationRendezVousMiddleware; 
+
 use toubilib\core\application\ports\spi\repositoryInterfaces\PraticienRepositoryInterface;
 use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepositoryInterface;
 use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepositoryInterface;
 
+use toubilib\api\actions\CreerPatientAction;
 use toubilib\api\actions\SigninAction;
+use toubilib\core\application\ports\api\ServicePatientInterface;
+
 use toubilib\api\provider\AuthProvider;
 
 return [
+    CreerPatientAction::class => function($container) {
+        return new CreerPatientAction($container->get(ServicePatientInterface::class));
+    },
     ListerPraticiensAction::class => function($container) {
         return new ListerPraticiensAction($container->get(ServicePraticienInterface::class));
     },
@@ -40,4 +47,5 @@ return [
     SigninAction::class => function($container) {
         return new SigninAction($container->get(AuthProvider::class));
     }
+    
 ];

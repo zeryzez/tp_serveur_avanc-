@@ -8,6 +8,8 @@ use toubilib\core\application\dto\RdvDTO;
 use toubilib\core\application\dto\InputRendezVousDTO;
 use toubilib\core\domain\entities\rdv\RDV;
 use toubilib\core\application\ports\api\ServiceRdvInterface;
+use Ramsey\Uuid\Uuid;
+
 
 class ServiceRdv implements ServiceRdvInterface
 {
@@ -63,9 +65,7 @@ class ServiceRdv implements ServiceRdvInterface
     }
 
     public function creerRendezVous(InputRendezVousDTO $dto): void {
-        // Validation métier
 
-        // Vérifier que le praticien existe
         $praticien = $this->praticienRepository->findById($dto->praticien_id);
         if (!$praticien) {
             throw new \Exception("Le praticien n'existe pas.");
@@ -77,7 +77,6 @@ class ServiceRdv implements ServiceRdvInterface
             throw new \Exception("Le patient n'existe pas.");
         }
 
-        // Vérifier que le motif de visite fait partie des motifs pour ce praticien
         $motifIds = array_map(fn($m) => (string)$m->getId(), $praticien->getMotifsVisite());
         if (!in_array($dto->motif_visite, $motifIds)) {
             throw new \Exception("Le motif de visite n'est pas valide pour ce praticien.");
@@ -91,6 +90,8 @@ class ServiceRdv implements ServiceRdvInterface
                 break;
             }
         }
+
+        $id = Uuid::uuid4()->toString();
 
         // Vérifier que le créneau horaire demandé est valide : jour ouvré et horaire possible
         $dateDebut = new \DateTime($dto->date_heure_debut);
