@@ -176,4 +176,24 @@ class ServiceRdv implements ServiceRdvInterface
         }
         return $agenda;
     }
+
+    public function getHistoriqueConsultations(string $patientId): array
+    {
+        $rdvs = $this->rdvRepository->findRdvsByPatientId($patientId);
+
+        return array_map(function($rdv) {
+            return new RdvDTO(
+                $rdv->getId(),
+                $rdv->getPraticienId(),
+                $rdv->getPatientId(),
+                $rdv->getPatientEmail(),
+                $rdv->getDateHeureDebut(),
+                $rdv->getDateHeureFin(),
+                $rdv->getStatus(),
+                $rdv->getDuree(),
+                $rdv->getDateCreation(),
+                $rdv->getMotifVisite()
+            );
+        }, $rdvs);
+    }
 }

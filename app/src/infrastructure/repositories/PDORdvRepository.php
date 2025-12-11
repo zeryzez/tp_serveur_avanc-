@@ -93,4 +93,30 @@ class PDORdvRepository implements RdvRepositoryInterface {
         ]);
     }
 
+    public function findRdvsByPatientId(string $patientId): array
+    {
+        // On récupère tous les champs (*) de la table RDV pour ce patient
+        $stmt = $this->pdo->prepare("SELECT * FROM rdv WHERE patient_id = :pid ORDER BY date_heure_debut DESC");
+        $stmt->execute(['pid' => $patientId]);
+
+        $results = $stmt->fetchAll();
+        $rdvs = [];
+
+        foreach ($results as $row) {
+            $rdvs[] = new RDV(
+                $row['id'],
+                $row['praticien_id'],
+                $row['patient_id'],
+                $row['patient_email'] ?? '',
+                $row['date_heure_debut'],
+                $row['date_heure_fin'],
+                $row['status'] ?? 1,
+                $row['duree'],
+                $row['date_creation'] ?? date('Y-m-d H:i:s'),
+                $row['type_document'] ?? 'Consultation'
+            );
+        }
+        return $rdvs;
+    }
+
 }

@@ -17,6 +17,7 @@ use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepositoryInterf
 use toubilib\api\actions\CreerPatientAction;
 use toubilib\api\actions\SigninAction;
 use toubilib\core\application\ports\api\ServicePatientInterface;
+use toubilib\api\actions\ListerConsultationsPatientAction;
 
 use toubilib\api\provider\AuthProvider;
 
@@ -35,6 +36,9 @@ return [
     },
     CreerRendezVousAction::class => function($container) {
         return new CreerRendezVousAction($container->get(ServiceRdvInterface::class));
+    },
+    ListerConsultationsPatientAction::class => function($container) {
+        return new ListerConsultationsPatientAction($container->get(ServiceRdvInterface::class));
     },
     ValidationRendezVousMiddleware::class => function($container) {
         return new ValidationRendezVousMiddleware(

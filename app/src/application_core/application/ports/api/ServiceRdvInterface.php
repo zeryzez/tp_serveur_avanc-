@@ -11,4 +11,5 @@ interface ServiceRdvInterface {
 
     public function creerRendezVous(InputRendezVousDTO $dto): void;
     public function annulerRendezVous(string $idRdv): void;
+    public function getHistoriqueConsultations(string $patientId): array;
 }

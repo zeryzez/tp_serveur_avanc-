@@ -17,6 +17,7 @@ use toubilib\api\actions\LoginAction;
 use toubilib\api\actions\SigninAction;
 use toubilib\api\actions\CreerPatientAction;
 use toubilib\api\middlewares\ValidationPatientMiddleware;
+use toubilib\api\actions\ListerConsultationsPatientAction;
 
 return function( \Slim\App $app):\Slim\App {
 
@@ -30,6 +31,7 @@ return function( \Slim\App $app):\Slim\App {
     $app->post('/rdvs', CreerRendezVousAction::class)->add(ValidationRendezVousMiddleware::class);
     $app->post('/inscription', CreerPatientAction::class)
         ->add(ValidationPatientMiddleware::class);
+    $app->get('/patients/{id}/consultations', ListerConsultationsPatientAction::class);
     $app->post('/auth/login', LoginAction::class);
     $app->post('/auth/signin', SigninAction::class);
 
