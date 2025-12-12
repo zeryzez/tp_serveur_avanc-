@@ -4,6 +4,7 @@ namespace toubilib\core\application\ports\api;
 
 use toubilib\core\application\dto\RdvDTO;
 use toubilib\core\application\dto\InputRendezVousDTO;
+use toubilib\core\application\dto\CreerIndisponibiliteDTO;
 
 interface ServiceRdvInterface {
     public function getRdvById(string $id): ?RdvDTO;
@@ -12,4 +13,5 @@ interface ServiceRdvInterface {
     public function creerRendezVous(InputRendezVousDTO $dto): void;
     public function annulerRendezVous(string $idRdv): void;
     public function getHistoriqueConsultations(string $patientId): array;
+    public function creerIndisponibilite(CreerIndisponibiliteDTO $dto): void;
 }

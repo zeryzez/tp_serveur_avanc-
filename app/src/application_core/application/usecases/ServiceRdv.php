@@ -6,6 +6,7 @@ use toubilib\core\application\ports\spi\repositoryInterfaces\PraticienRepository
 use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepositoryInterface;
 use toubilib\core\application\dto\RdvDTO;
 use toubilib\core\application\dto\InputRendezVousDTO;
+use toubilib\core\application\dto\CreerIndisponibiliteDTO;
 use toubilib\core\domain\entities\rdv\RDV;
 use toubilib\core\application\ports\api\ServiceRdvInterface;
 use Ramsey\Uuid\Uuid;
@@ -161,20 +162,52 @@ class ServiceRdv implements ServiceRdvInterface
 
         $agenda = [];
         foreach ($rdvs as $rdv) {
-            $agenda[] = [
+            $item = [
                 'id' => $rdv->getId(),
                 'date' => $rdv->getDateHeureDebut(),
                 'heure' => date('H:i', strtotime($rdv->getDateHeureDebut())),
                 'duree' => $rdv->getDuree(),
                 'motif' => $rdv->getMotifVisite(),
                 'etat' => $rdv->getStatus(),
-                'patient' => [
+            ];
+
+            if ($rdv->getStatus() === RDV::STATUS_INDISPONIBLE) {
+                $item['type'] = 'indisponibilite';
+            } else {
+                $item['type'] = 'rdv';
+                $item['patient'] = [
                     'id' => $rdv->getPatientId(),
                     'lien' => '/patients/' . $rdv->getPatientId()
-                ]
-            ];
+                ];
+            }
+            $agenda[] = $item;
         }
         return $agenda;
+    }
+
+    public function creerIndisponibilite(CreerIndisponibiliteDTO $dto): void
+    {
+        $id = Uuid::uuid4()->toString();
+        $dateDebut = new \DateTime($dto->date_debut);
+        $dateFin = new \DateTime($dto->date_fin);
+        
+        $diff = $dateFin->diff($dateDebut);
+        $minutes = ($diff->days * 24 * 60) + ($diff->h * 60) + $diff->i;
+
+        $rdv = new RDV(
+            $id,
+            $dto->praticien_id,
+            RDV::PATIENT_ID_INDISPONIBLE,
+            null, 
+            $dto->date_debut,
+            $dto->date_fin,
+            RDV::STATUS_INDISPONIBLE,
+            $minutes,
+            date('Y-m-d H:i:s'), 
+            'Indisponibilité' 
+        );
+
+        $this->rdvRepository->save($rdv);
     }
 
     public function getHistoriqueConsultations(string $patientId): array

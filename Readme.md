@@ -1,12 +1,12 @@
 Membres du projet
 
-    Defolie
+    Defolie Julien
 
-    Blombou
+    Blonbou Mathys
 
-    Hermann
+    Hermann Vivien
 
-    Haddad
+    Haddad Ryad
 
 Architecture
 
@@ -117,9 +117,9 @@ docker-compose.yml
 
 | Membre                | Contributions Principales                                                                                                 |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| **Machin**        | Architecture hexagonale, Authentification JWT, Middlewares                                                                |
+| **Mathys-Vivien**        | Architecture hexagonale, Authentification JWT, Middlewares                                                                |
 | **Machin** | API RESTful, Validation des données, HATEOAS                                                                             |
-| **Machin**        | Bases de données, Docker                                                                                                 |
+| **Mathys**        | Bases de données, Docker                                                                                                 |
 | **Machin**        | Home, Authentification                                                                                                    |
-| **Ryad**       | Lister les praticiens, Détail praticien, Créneaux occupés, Consulter RDV, Réserver RDV, Annuler RDV, Agenda praticien |
+| **Ryad-Mathys-Vivien-Julien**       | Lister les praticiens, Détail praticien, Créneaux occupés, Consulter RDV, Réserver RDV, Annuler RDV, Agenda praticien |
 | **Ryad**       | Détail praticien, Status, HATEOAS                                                                                        |

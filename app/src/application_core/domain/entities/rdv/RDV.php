@@ -3,6 +3,12 @@
 namespace toubilib\core\domain\entities\rdv;
 
 class RDV {
+    public const STATUS_ANNULE = 0;
+    public const STATUS_PLANIFIE = 1;
+    public const STATUS_INDISPONIBLE = 2;
+
+    public const PATIENT_ID_INDISPONIBLE = 'SYSTEM_INDISPONIBILITE';
+
     private string $id;
     private string $praticien_id;
     private string $patient_id;

@@ -18,6 +18,7 @@ use toubilib\api\actions\SigninAction;
 use toubilib\api\actions\CreerPatientAction;
 use toubilib\api\middlewares\ValidationPatientMiddleware;
 use toubilib\api\actions\ListerConsultationsPatientAction;
+use toubilib\api\actions\CreerIndisponibiliteAction;
 
 return function( \Slim\App $app):\Slim\App {
 
@@ -27,6 +28,7 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/praticiens/{id}/creneaux', ListerCreneauxOccupes::class);
     $app->get('/rdvs/{id}', AfficherRdvAction::class)->setName('rdv-detail')->add(AuthzRendezVousMiddleware::class);
     $app->get('/praticiens/{id}/agenda', AfficherAgendaPraticienAction::class)->setName('agenda-praticien')->add(AuthzRendezVousMiddleware::class);
+    $app->post('/praticiens/{id}/indisponibilites', CreerIndisponibiliteAction::class);
     $app->post('/rdvs/{id}/annuler', AnnulerRDVAction::class);
     $app->post('/rdvs', CreerRendezVousAction::class)->add(ValidationRendezVousMiddleware::class);
     $app->post('/inscription', CreerPatientAction::class)
