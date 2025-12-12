@@ -24,6 +24,7 @@ class HomeAction
                 'POST /rdvs/{id}/annuler' => 'Annuler un rendez-vous (Attention: route modifiée)',
                 'POST /rdvs/{id}/honorer' => 'Marquer un rendez-vous comme honoré',
                 'POST /rdvs/{id}/non-honore' => 'Marquer un rendez-vous comme non honoré',
+                'POST /praticiens/{id}/indisponibilites' => 'Ajouter une indisponibilité pour un praticien',
 
                 'POST /inscription' => 'Inscrire un nouveau patient',
                 'GET /patients/{id}/consultations' => 'Obtenir l\'historique des consultations d\'un patient',
