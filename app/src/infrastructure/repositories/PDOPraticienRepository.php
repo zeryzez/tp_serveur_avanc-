@@ -9,17 +9,46 @@ use toubilib\core\domain\entities\praticien\MoyenPaiement;
 
 class PDOPraticienRepository implements PraticienRepositoryInterface
 {
-
     private \PDO $pdo;
 
     public function __construct(\PDO $pdo) {
         $this->pdo = $pdo;
     }
 
-    public function findAll(): array {
-        $stmt = $this->pdo->query('SELECT p.*, s.libelle FROM praticien p JOIN specialite s ON p.specialite_id = s.id');
+    // Modification : Paramètres ajoutés et SQL dynamique
+    public function findAll(?string $specialite = null, ?string $ville = null): array {
+        
+        // 1. La requête de base avec la Jointure
+        $sql = 'SELECT p.*, s.libelle FROM praticien p JOIN specialite s ON p.specialite_id = s.id';
+        
+        $conditions = [];
+        $params = [];
+
+        // 2. On ajoute les conditions si les paramètres sont présents
+        if ($specialite !== null && $specialite !== '') {
+            // On cherche dans la table 'specialite' (alias s)
+            $conditions[] = "s.libelle ILIKE :specialite";
+            $params['specialite'] = '%' . $specialite . '%';
+        }
+
+        if ($ville !== null && $ville !== '') {
+            // On cherche dans la table 'praticien' (alias p)
+            $conditions[] = "p.ville ILIKE :ville";
+            $params['ville'] = '%' . $ville . '%';
+        }
+
+        // 3. On assemble le SQL
+        if (count($conditions) > 0) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        // 4. Exécution préparée
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        
         $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
+        // 5. Mapping (Ton code existant inchangé)
         return array_map(function ($row) {
             $praticien = new Praticien(
                 $row['id'],
@@ -43,8 +72,10 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
         }, $results);
     }
 
+    // ... Le reste du fichier (findById, loadMotifs...) reste INCHANGÉ ...
     public function findById(string $id): ?Praticien
     {
+        // (Garde ton code actuel ici)
         $stmt = $this->pdo->prepare('SELECT p.*, s.libelle FROM praticien p JOIN specialite s ON p.specialite_id = s.id WHERE p.id = :id');
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -76,6 +107,7 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
 
     private function loadMotifsVisite(Praticien $praticien): void
     {
+        // (Garde ton code actuel ici)
         $stmt = $this->pdo->prepare('
             SELECT mv.id, mv.libelle
             FROM motif_visite mv
@@ -93,6 +125,7 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
 
     private function loadMoyensPaiement(Praticien $praticien): void
     {
+        // (Garde ton code actuel ici)
         $stmt = $this->pdo->prepare('
             SELECT mp.id, mp.libelle
             FROM moyen_paiement mp

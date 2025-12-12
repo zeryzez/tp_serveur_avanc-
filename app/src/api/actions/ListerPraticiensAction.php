@@ -17,7 +17,13 @@ class ListerPraticiensAction
 
     public function __invoke(Request $request, Response $response): Response
     {
-        $praticiens = $this->servicePraticien->listerPraticiens();
+        // 1. On récupère les paramètres de l'URL
+        $queryParams = $request->getQueryParams();
+        $specialite = $queryParams['specialite'] ?? null;
+        $ville = $queryParams['ville'] ?? null;
+
+        // 2. On appelle le service avec ces paramètres
+        $praticiens = $this->servicePraticien->listerPraticiens($specialite, $ville);
 
         $response->getBody()->write(json_encode([
             'status' => 'success',

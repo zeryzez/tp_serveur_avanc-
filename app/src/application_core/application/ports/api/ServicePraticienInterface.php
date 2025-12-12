@@ -7,17 +7,13 @@ use toubilib\core\application\dto\PraticienDTO;
 interface ServicePraticienInterface
 {
     /**
-     * Liste tous les praticiens.
+     * Liste tous les praticiens avec filtres optionnels.
      *
+     * @param string|null $specialite
+     * @param string|null $ville
      * @return array
      */
-    public function listerPraticiens(): array;
+    public function listerPraticiens(?string $specialite = null, ?string $ville = null): array;
 
-    /**
-     * Récupère le détail d'un praticien par son ID.
-     *
-     * @param string $id
-     * @return PraticienDTO|null
-     */
     public function getDetailPraticien(string $id): ?PraticienDTO;
 }

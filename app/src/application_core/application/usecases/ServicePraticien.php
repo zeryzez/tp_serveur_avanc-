@@ -17,30 +17,32 @@ class ServicePraticien implements ServicePraticienInterface
         $this->praticienRepository = $praticienRepository;
     }
 
-    public function listerPraticiens(): array {
-    	$praticiens = $this->praticienRepository->findAll();
-    return array_map(function ($praticien) {
-        return new PraticienDTO(
-            $praticien->getId(),
-            $praticien->getNom(),
-            $praticien->getPrenom(),
-            $praticien->getVille(),
-            $praticien->getEmail(),
-            $praticien->getTelephone(),
-            $praticien->getSpecialite(),
-            $praticien->getStructureId(),
-            $praticien->getRppsId(),
-            $praticien->isOrganisation(),
-            $praticien->isNouveauPatient(),
-            $praticien->getTitre(),
-            array_map(function ($motif) {
-                return ['id' => $motif->getId(), 'libelle' => $motif->getLibelle()];
-            }, $praticien->getMotifsVisite()),
-            array_map(function ($moyen) {
-                return ['id' => $moyen->getId(), 'libelle' => $moyen->getLibelle()];
-            }, $praticien->getMoyensPaiement())
-        );
-    }, $praticiens);
+    public function listerPraticiens(?string $specialite = null, ?string $ville = null): array {
+        
+        $praticiens = $this->praticienRepository->findAll($specialite, $ville);
+
+        return array_map(function ($praticien) {
+            return new PraticienDTO(
+                $praticien->getId(),
+                $praticien->getNom(),
+                $praticien->getPrenom(),
+                $praticien->getVille(),
+                $praticien->getEmail(),
+                $praticien->getTelephone(),
+                $praticien->getSpecialite(),
+                $praticien->getStructureId(),
+                $praticien->getRppsId(),
+                $praticien->isOrganisation(),
+                $praticien->isNouveauPatient(),
+                $praticien->getTitre(),
+                array_map(function ($motif) {
+                    return ['id' => $motif->getId(), 'libelle' => $motif->getLibelle()];
+                }, $praticien->getMotifsVisite()),
+                array_map(function ($moyen) {
+                    return ['id' => $moyen->getId(), 'libelle' => $moyen->getLibelle()];
+                }, $praticien->getMoyensPaiement())
+            );
+        }, $praticiens);
     }
 
     public function getDetailPraticien(string $id): ?PraticienDTO

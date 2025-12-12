@@ -13,7 +13,7 @@ class HomeAction
             'message' => 'Bienvenue sur l\'API Toubilib',
             'version' => '1.0.0',
             'endpoints' => [
-                'GET /praticiens' => 'Lister tous les praticiens',
+                'GET /praticiens?ville={ville}&specialite={specialite}' => 'Lister les praticiens (Filtres optionnels : ville, specialite)',                
                 'GET /praticiens/{id}' => 'Afficher les détails d\'un praticien',
                 'GET /praticiens/{id}/creneaux' => 'Lister les créneaux occupés d\'un praticien',
                 "GET /praticiens/{id}/agenda?date_debut=YYYY-MM-DD%2000:00:00&date_fin=YYYY-MM-DD%2023:59:59" => "Consulter l'agenda d'un praticien sur une période donnée (préciser les heures pour inclure toute la journée)",
