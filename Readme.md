@@ -121,5 +121,5 @@ docker-compose.yml
 | **Machin** | API RESTful, Validation des données, HATEOAS                                                                             |
 | **Mathys**        | Bases de données, Docker                                                                                                 |
 | **Machin**        | Home, Authentification                                                                                                    |
-| **Ryad-Mathys-Vivien-Julien**       | Lister les praticiens, Détail praticien, Créneaux occupés, Consulter RDV, Réserver RDV, Annuler RDV, Agenda praticien |
+| **Ryad-Mathys-Vivien-Julien**       | Lister les praticiens, Détail praticien, Créneaux occupés, Consulter RDV, Réserver RDV, Annuler RDV, Agenda praticien | Honorer, non honorer
 | **Ryad**       | Détail praticien, Status, HATEOAS                                                                                        |
