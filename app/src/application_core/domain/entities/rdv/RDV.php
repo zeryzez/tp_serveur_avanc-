@@ -6,6 +6,8 @@ class RDV {
     public const STATUS_ANNULE = 0;
     public const STATUS_PLANIFIE = 1;
     public const STATUS_INDISPONIBLE = 2;
+    public const STATUS_HONORE = 3;
+    public const STATUS_NON_HONORE = 4;
 
     public const PATIENT_ID_INDISPONIBLE = 'SYSTEM_INDISPONIBILITE';
 
@@ -69,5 +71,59 @@ class RDV {
         }
 
         $this->status = 0; // Annulé
+    }
+
+    public function honorer(): void {
+        if ($this->status === self::STATUS_ANNULE) {
+            throw new \Exception("Impossible d'honorer un rendez-vous annulé.");
+        }
+
+        if ($this->status === self::STATUS_INDISPONIBLE) {
+            throw new \Exception("Impossible d'honorer une période d'indisponibilité.");
+        }
+
+        if ($this->status === self::STATUS_HONORE) {
+            throw new \Exception("Le rendez-vous est déjà honoré.");
+        }
+
+        if ($this->status === self::STATUS_NON_HONORE) {
+            throw new \Exception("Le rendez-vous est déjà marqué comme non honoré.");
+        }
+
+        $now = new \DateTime();
+        $fin = new \DateTime($this->date_heure_fin);
+
+        if ($now < $fin) {
+            throw new \Exception("Impossible d'honorer un rendez-vous dont la date de fin n'est pas encore passée.");
+        }
+
+        $this->status = self::STATUS_HONORE;
+    }
+
+    public function marquerNonHonore(): void {
+        if ($this->status === self::STATUS_ANNULE) {
+            throw new \Exception("Impossible de marquer comme non honoré un rendez-vous annulé.");
+        }
+
+        if ($this->status === self::STATUS_INDISPONIBLE) {
+            throw new \Exception("Impossible de marquer une période d'indisponibilité comme non honorée.");
+        }
+
+        if ($this->status === self::STATUS_HONORE) {
+            throw new \Exception("Le rendez-vous est déjà honoré.");
+        }
+
+        if ($this->status === self::STATUS_NON_HONORE) {
+            throw new \Exception("Le rendez-vous est déjà marqué comme non honoré.");
+        }
+
+        $now = new \DateTime();
+        $debut = new \DateTime($this->date_heure_debut);
+
+        if ($now < $debut) {
+            throw new \Exception("Impossible de marquer comme non honoré un rendez-vous dont la date n'est pas encore passée.");
+        }
+
+        $this->status = self::STATUS_NON_HONORE;
     }
 }

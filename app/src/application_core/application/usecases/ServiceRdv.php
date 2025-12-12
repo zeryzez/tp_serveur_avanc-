@@ -65,7 +65,7 @@ class ServiceRdv implements ServiceRdvInterface
         }, $rdvs);
     }
 
-    public function creerRendezVous(InputRendezVousDTO $dto): void {
+    public function creerRendezVous(InputRendezVousDTO $dto): string {
 
         $praticien = $this->praticienRepository->findById($dto->praticien_id);
         if (!$praticien) {
@@ -139,6 +139,7 @@ class ServiceRdv implements ServiceRdvInterface
         );
 
         $this->rdvRepository->save($rdv);
+        return $id;
     }
 
     public function annulerRendezVous(string $idRdv): void
@@ -148,6 +149,26 @@ class ServiceRdv implements ServiceRdvInterface
             throw new \Exception("Le rendez-vous n'existe pas.");
         }
         $rdv->annuler();
+        $this->rdvRepository->save($rdv);
+    }
+
+    public function honorerRendezVous(string $idRdv): void
+    {
+        $rdv = $this->rdvRepository->findById($idRdv);
+        if (!$rdv) {
+            throw new \Exception("Le rendez-vous n'existe pas.");
+        }
+        $rdv->honorer();
+        $this->rdvRepository->save($rdv);
+    }
+
+    public function marquerNonHonoreRendezVous(string $idRdv): void
+    {
+        $rdv = $this->rdvRepository->findById($idRdv);
+        if (!$rdv) {
+            throw new \Exception("Le rendez-vous n'existe pas.");
+        }
+        $rdv->marquerNonHonore();
         $this->rdvRepository->save($rdv);
     }
 

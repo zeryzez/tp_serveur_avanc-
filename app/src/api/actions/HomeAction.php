@@ -22,6 +22,8 @@ class HomeAction
                 // http://localhost:6080/praticiens/4305f5e9-be5a-4ccf-8792-7e07d7017363/agenda?date_debut=2025-12-04%2000:00:00&date_fin=2025-12-04%2023:59:59 url de test
                 'POST /rdvs' => 'Créer un rendez-vous',
                 'POST /rdvs/{id}/annuler' => 'Annuler un rendez-vous (Attention: route modifiée)',
+                'POST /rdvs/{id}/honorer' => 'Marquer un rendez-vous comme honoré',
+                'POST /rdvs/{id}/non-honore' => 'Marquer un rendez-vous comme non honoré',
 
                 'POST /inscription' => 'Inscrire un nouveau patient',
                 'GET /patients/{id}/consultations' => 'Obtenir l\'historique des consultations d\'un patient',

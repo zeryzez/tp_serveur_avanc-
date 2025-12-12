@@ -28,11 +28,15 @@ class CreerRendezVousAction
 
         try {
             // Appelle le service métier pour créer le RDV
-            $this->serviceRdv->creerRendezVous($dto);
+            $rdvId = $this->serviceRdv->creerRendezVous($dto);
 
             $response->getBody()->write(json_encode([
                 'status' => 'success',
-                'message' => 'Rendez-vous créé'
+                'message' => 'Rendez-vous créé',
+                'rdv_id' => $rdvId,
+                'links' => [
+                    'self' => '/rdvs/' . $rdvId
+                ]
             ]));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
         } catch (\Exception $e) {

@@ -13,6 +13,8 @@ use toubilib\api\actions\CreerRendezVousAction;
 use toubilib\api\middlewares\ValidationRendezVousMiddleware;
 use toubilib\api\middlewares\AuthzRendezVousMiddleware;
 use toubilib\api\actions\AnnulerRDVAction;
+use toubilib\api\actions\HonorerRdvAction;
+use toubilib\api\actions\MarquerNonHonoreRdvAction;
 use toubilib\api\actions\LoginAction;
 use toubilib\api\actions\SigninAction;
 use toubilib\api\actions\CreerPatientAction;
@@ -26,10 +28,12 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/praticiens', ListerPraticiensAction::class);
     $app->get('/praticiens/{id}', AfficherDetailPraticienAction::class);
     $app->get('/praticiens/{id}/creneaux', ListerCreneauxOccupes::class);
-    $app->get('/rdvs/{id}', AfficherRdvAction::class)->setName('rdv-detail')->add(AuthzRendezVousMiddleware::class);
-    $app->get('/praticiens/{id}/agenda', AfficherAgendaPraticienAction::class)->setName('agenda-praticien')->add(AuthzRendezVousMiddleware::class);
+    $app->get('/rdvs/{id}', AfficherRdvAction::class)->setName('rdv-detail');
+    $app->get('/praticiens/{id}/agenda', AfficherAgendaPraticienAction::class)->setName('agenda-praticien');
     $app->post('/praticiens/{id}/indisponibilites', CreerIndisponibiliteAction::class);
     $app->post('/rdvs/{id}/annuler', AnnulerRDVAction::class);
+    $app->post('/rdvs/{id}/honorer', HonorerRdvAction::class);
+    $app->post('/rdvs/{id}/non-honore', MarquerNonHonoreRdvAction::class);
     $app->post('/rdvs', CreerRendezVousAction::class)->add(ValidationRendezVousMiddleware::class);
     $app->post('/inscription', CreerPatientAction::class)
         ->add(ValidationPatientMiddleware::class);
