@@ -84,13 +84,13 @@ Fonctionnalités Additionnelles
 
     [x] 9. Recherche par Spécialité et/ou Ville (GET /praticiens?ville=...)
 
-    [ ] 10. Gérer le cycle de vie des RDV (honoré/non honoré)
+    [x] 10. Gérer le cycle de vie des RDV (honoré/non honoré)
 
     [x] 11. Historique des consultations d'un patient
 
     [x] 12. Inscription patient
 
-    [ ] 13. Gérer les indisponibilités temporaires
+    [x] 13. Gérer les indisponibilités temporaires
 
 
 
